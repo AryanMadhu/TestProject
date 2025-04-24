@@ -6,6 +6,7 @@
   align-items: center;
   padding: 14px 30px;
   background: linear-gradient(to right, #667eea, #764ba2);
+  border-radius: 0px 0px 15px 15px;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -13,12 +14,26 @@
   z-index: 1000;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .nav-left a {
   color: white;
   text-decoration: none;
   margin-right: 20px;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 18px;
   transition: color 0.3s ease;
 }
 
@@ -35,6 +50,7 @@
   border-radius: 4px;
   color: #333;
   font-weight: bold;
+  font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
