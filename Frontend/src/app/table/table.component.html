@@ -3,6 +3,9 @@
 <div class="user-table-container">
   <!-- Search Bar -->
   <div class="search-bar">
+
+    <div class="search-spacer"></div>
+    
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
       <input 
@@ -12,6 +15,11 @@
         (input)="onSearch()"
       />
     </div>
+
+    <!-- New Download Button -->
+    <button class="download-btn" (click)="onDownloadCsv()" title="Download CSV">
+      <i class="fas fa-file-csv"></i> Download CSV
+    </button>
   </div>
   
   <h2 class="table-title">User List</h2>
@@ -68,11 +76,21 @@
   <div class="pagination-wrapper">
     <button (click)="prevPage()" [disabled]="page === 0">Prev</button>
 
-    <button 
+    <!-- <button 
       *ngFor="let p of [].constructor(totalPages); let i = index"
       (click)="goToPage(i)"
       [class.active]="i === page">
       {{ i + 1 }}
+    </button> -->
+
+    <button
+    *ngFor="let p of visiblePages"
+    [class.ellipsis]="p === '...'"
+    [class.active]="p === page"
+    (click)="onPageClick(p)"
+    [disabled]="p === '...'"
+    >
+      {{ p === '...' ? '...' : p + 1 }}
     </button>
 
     <button (click)="nextPage()" [disabled]="page + 1 >= totalPages">Next</button>

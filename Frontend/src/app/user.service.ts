@@ -29,12 +29,12 @@ export interface UserPageResponse {
 })
 
 export class UserService {
-  private apiUrl = 'http://localhost:8080/get-admin-data';
+  private apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
   getUserData(email: string): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/${email}`);
+    return this.http.get<User>(`${this.apiUrl}/get-admin-data/${email}`);
   }
 
   getUserTable(page: number, size: number, search?: string): Observable<UserPageResponse> {
@@ -63,6 +63,12 @@ export class UserService {
     formData.append('image', imageFile);
   
     return this.http.put<boolean>('http://localhost:8080/update-user-data', formData);
+  }
+
+  downloadCsv(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/export`, {
+      responseType: 'blob'
+    });
   }
 
 }

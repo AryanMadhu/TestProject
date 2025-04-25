@@ -1,11 +1,17 @@
 package com.example.exam.controller;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +28,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.exam.dto.LoginRequest;
 import com.example.exam.dto.LoginResponse;
 import com.example.exam.dto.ResetPasswordRequest;
+import com.example.exam.entity.AdminUser;
 import com.example.exam.proxy.AdminUserProxy;
 import com.example.exam.service.AdminUserService;
 import com.example.exam.service.ResetPasswordService;
+import com.example.exam.utils.CsvUtils;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -104,5 +113,18 @@ public class AdminUserController {
 	  Page<AdminUserProxy> result = userService.getAllUsers(pageable, search);
 	  return ResponseEntity.ok(result);
 	}
+	
+	@GetMapping("/export")
+    public void exportUsersCsv(HttpServletResponse response) throws IOException {
+        String filename = "users.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                           "attachment; filename=\"" + filename + "\"");
+
+        List<AdminUserProxy> all = userService.getAllUsers();
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8))) {
+            CsvUtils.writeUsersToCsv(all, writer);
+        }
+    }
 	
 }
